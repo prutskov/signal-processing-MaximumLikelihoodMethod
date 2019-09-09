@@ -3,7 +3,8 @@
 //
 
 #pragma once
-
+#include "Drawer.h"
+#include "Signal.h"
 
 // Диалоговое окно CMaximumLikelihoodMethodDlg
 class CMaximumLikelihoodMethodDlg : public CDialogEx
@@ -30,4 +31,11 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	std::vector<PointF> *vector;
+
+	void init_parameters();
+	afx_msg void OnBnClickedOk();
+	std::shared_ptr<Signal<float>> signal1;
+	Drawer drawer1;
 };
