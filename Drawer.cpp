@@ -41,7 +41,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 		}
 	}
 	ymax = maxY + maxY / 3.f;
-	ymin = -ymax / 14.f;
+	ymin = -ymax / 12.f;
 	step_y = ymax / 4.f;
 
 	xmax = maxX;
