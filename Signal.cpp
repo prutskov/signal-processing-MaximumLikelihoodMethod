@@ -4,24 +4,34 @@
 #include <ctime>
 
 template Signal<float>;
+template Signal<double>;
 
 template<typename fptype>
-Signal<fptype>::Signal(const size_t size)
+Signal<fptype>::Signal(size_t nBits, fptype A, fptype f0, fptype bt, fptype fd)
+	: _A(A), _f0(f0), _bt(bt), _fd(fd)
 {
-	_dataBits.resize(size);
+	_dataBits.resize(nBits);
 
 	std::mt19937 generator(static_cast<unsigned int>(time(0)));
 	std::uniform_int_distribution<int> distribution(0, 1);
-	for (size_t i = 0; i < size; ++i)
+	for (size_t i = 0; i < nBits; ++i)
 	{
 		_dataBits[i] = static_cast<unsigned char>(distribution(generator));
 	}
+
+	modulateSignal();
 }
 
 template<typename fptype>
 std::vector<unsigned char> * Signal<fptype>::getData()
 {
 	return &_dataBits;
+}
+
+template<typename fptype>
+std::vector<PointF>* Signal<fptype>::getSignalPoints()
+{
+	return &_signalModulated;
 }
 
 template<typename fptype>
@@ -46,6 +56,8 @@ void Signal<fptype>::modulateSignal()
 			return _A / static_cast<fptype>(2);
 	};
 
+	_dataModulated.clear();
+	_signalModulated.clear();
 	size_t bitIdx = 0;
 	fptype curBitTime = 0;
 	for (fptype time = 0; time < timeOfSignal; time+=Td)
@@ -62,5 +74,7 @@ void Signal<fptype>::modulateSignal()
 
 		_dataModulated.emplace_back(A(_dataBits[bitIdx])*sin(2.*M_PI*_f0*time));
 
+		PointF point(time, *_dataModulated.end());
+		_signalModulated.emplace_back(point);
 	}
 }

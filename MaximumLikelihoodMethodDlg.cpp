@@ -19,6 +19,10 @@
 
 CMaximumLikelihoodMethodDlg::CMaximumLikelihoodMethodDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MAXIMUMLIKELIHOODMETHOD_DIALOG, pParent)
+	, A(1)
+	, bt(1)
+	, f0(20)
+	, fd(40)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -27,12 +31,17 @@ void CMaximumLikelihoodMethodDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_GRAPH1, drawer1);
+	DDX_Text(pDX, IDC_A, A);
+	DDX_Text(pDX, IDC_BT, bt);
+	DDX_Text(pDX, IDC_F0, f0);
+	DDX_Text(pDX, IDC_FD, fd);
 }
 
 BEGIN_MESSAGE_MAP(CMaximumLikelihoodMethodDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMaximumLikelihoodMethodDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMaximumLikelihoodMethodDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -49,7 +58,7 @@ BOOL CMaximumLikelihoodMethodDlg::OnInitDialog()
 
 	// TODO: добавьте дополнительную инициализацию
 	init_parameters();
-	signal1 = std::make_shared<Signal<float>>(10);
+	signal1 = std::make_shared<Signal<float>>(3, A, f0, bt, fd);
 	return TRUE;  // возврат значения TRUE, если фокус не передан элементу управления
 }
 
@@ -98,4 +107,13 @@ void CMaximumLikelihoodMethodDlg::init_parameters()
 void CMaximumLikelihoodMethodDlg::OnBnClickedOk()
 {
 	CDialogEx::OnOK();
+}
+
+
+void CMaximumLikelihoodMethodDlg::OnBnClickedButton1()
+{
+	UpdateData(TRUE);
+	signal1 = std::make_shared<Signal<float>>(3, A, f0, bt, fd);
+	drawer1._points = signal1->getSignalPoints();
+	drawer1.Invalidate();
 }
