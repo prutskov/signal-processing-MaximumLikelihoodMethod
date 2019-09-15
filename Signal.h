@@ -8,12 +8,23 @@
 using namespace Gdiplus;
 using namespace std;
 
+template<typename fptype>
+struct SignalParameter
+{
+	size_t _nBits;
+	fptype _A;
+	fptype _f0;
+	fptype _bt;
+	fptype _fd;
+};
+
 template <typename fptype>
 class Signal
 {
 public:
-	Signal(size_t nBits, fptype A, fptype f0, fptype bt, fptype fd);
+	Signal(SignalParameter<fptype> params);
 	std::vector<uint8_t>* getData();
+	SignalParameter<fptype> getParameters();
 	std::vector<PointF>* getSignalPoints();
 	virtual ~Signal();
 
@@ -26,9 +37,6 @@ private:
 	std::vector<PointF> _signalModulated;
 	std::vector<uint8_t> _dataBits;
 
-	fptype _f0;
-	fptype _bt;
-	fptype _fd;
-	fptype _A;
+	SignalParameter<fptype> _par;
 };
 

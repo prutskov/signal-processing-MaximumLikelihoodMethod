@@ -36,11 +36,13 @@ public:
 
 	void init_parameters();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedButton1();
+
 	std::shared_ptr<Signal<float>> signal1;
 	Drawer drawer1;
 	double A;
 	double bt;
 	double f0;
 	double fd;
-	afx_msg void OnBnClickedButton1();
+	int N;
 };

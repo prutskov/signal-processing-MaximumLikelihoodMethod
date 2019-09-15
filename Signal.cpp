@@ -7,14 +7,14 @@ template Signal<float>;
 template Signal<double>;
 
 template<typename fptype>
-Signal<fptype>::Signal(size_t nBits, fptype A, fptype f0, fptype bt, fptype fd)
-	: _A(A), _f0(f0), _bt(bt), _fd(fd)
+Signal<fptype>::Signal(SignalParameter<fptype> params)
+	: _par(params)
 {
-	_dataBits.resize(nBits);
+	_dataBits.resize(_par._nBits);
 
 	std::mt19937 generator(static_cast<unsigned int>(time(0)));
 	std::uniform_int_distribution<int> distribution(0, 1);
-	for (size_t i = 0; i < nBits; ++i)
+	for (size_t i = 0; i < _par._nBits; ++i)
 	{
 		_dataBits[i] = static_cast<uint8_t>(distribution(generator));
 	}
@@ -29,6 +29,12 @@ std::vector<uint8_t> * Signal<fptype>::getData()
 }
 
 template<typename fptype>
+SignalParameter<fptype> Signal<fptype>::getParameters()
+{
+	return _par;
+}
+
+template<typename fptype>
 std::vector<PointF>* Signal<fptype>::getSignalPoints()
 {
 	return &_signalModulated;
@@ -38,22 +44,24 @@ template<typename fptype>
 Signal<fptype>::~Signal()
 {
 	_dataBits.clear();
+	_dataModulated.clear();
+	_signalModulated.clear();
 }
 
 template<typename fptype>
 void Signal<fptype>::modulateSignal()
 {
-	const fptype Td = static_cast<fptype>(1) / _fd;
-	const fptype TmodPerBit = static_cast<fptype>(1) / _bt;
+	const fptype Td = static_cast<fptype>(1) / _par._fd;
+	const fptype TmodPerBit = static_cast<fptype>(1) / _par._bt;
 	const fptype timeOfSignal = TmodPerBit * _dataBits.size();
 
 
 	auto A = [&](const uint8_t bit)
 	{
 		if (bit == 1)
-			return _A;
+			return _par._A;
 		else
-			return _A / static_cast<fptype>(2);
+			return _par._A / static_cast<fptype>(2);
 	};
 
 	_dataModulated.clear();
@@ -72,7 +80,7 @@ void Signal<fptype>::modulateSignal()
 			curBitTime = 0.0;
 		}
 
-		_dataModulated.emplace_back(A(_dataBits[bitIdx])*sin(2.*M_PI*_f0*time));
+		_dataModulated.emplace_back(A(_dataBits[bitIdx])*sin(2.*M_PI*_par._f0*time));
 
 		PointF point(time, _dataModulated.back());
 		_signalModulated.emplace_back(point);
