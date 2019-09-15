@@ -27,6 +27,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	float maxX = 1;
 	if (_points != nullptr&&_points[0].size() > 0)
 	{
+		maxX = 0;
 		maxY = 0;
 		size_t size = _points->size();
 		for (size_t i = 0; i < size; ++i)
@@ -41,7 +42,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 		}
 	}
 	ymax = maxY + maxY / 3.f;
-	ymin = -ymax / 12.f;
+	ymin = -maxY - maxY / 3.f;
 	step_y = ymax / 4.f;
 
 	xmax = maxX;
@@ -57,7 +58,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	Gdiplus::Font podpis(&podpis_osi, 12, FontStyleRegular, UnitPixel);
 
 	SolidBrush brush(Color::White);
-	Pen graph_pen(Color::Yellow, 4);
+	Pen graph_pen(Color::Yellow, 1);
 	Pen bottom_pen(Color::Aqua, 4);
 	Pen axis_pen(Color::White, 3);
 	Pen grid_pen(Color::LightGray, 1);
@@ -90,7 +91,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	for (float x = step_x; x <= xmax; x += step_x)
 	{
 		CString str;
-		str.Format(_T("%.1f"), x);
+		str.Format(_T("%.3f"), x);
 		grBmp.DrawString(str, -1, &podpis, PointF(X(RECT, x), Y(RECT, 0) + 2.f), NULL, &brush);
 	}
 	for (float x = -step_x; x >= xmin; x -= step_x)

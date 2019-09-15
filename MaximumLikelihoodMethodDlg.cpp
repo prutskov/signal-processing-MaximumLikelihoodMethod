@@ -20,9 +20,9 @@
 CMaximumLikelihoodMethodDlg::CMaximumLikelihoodMethodDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MAXIMUMLIKELIHOODMETHOD_DIALOG, pParent)
 	, A(1)
-	, bt(1)
-	, f0(20)
-	, fd(40)
+	, bt(9600)
+	, f0(25000)
+	, fd(250000)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -113,7 +113,7 @@ void CMaximumLikelihoodMethodDlg::OnBnClickedOk()
 void CMaximumLikelihoodMethodDlg::OnBnClickedButton1()
 {
 	UpdateData(TRUE);
-	signal1 = std::make_shared<Signal<float>>(3, A, f0, bt, fd);
+	signal1 = std::make_shared<Signal<float>>(5, A, f0, bt, fd);
 	drawer1._points = signal1->getSignalPoints();
 	drawer1.Invalidate();
 }

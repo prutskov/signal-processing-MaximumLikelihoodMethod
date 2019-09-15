@@ -16,14 +16,14 @@ Signal<fptype>::Signal(size_t nBits, fptype A, fptype f0, fptype bt, fptype fd)
 	std::uniform_int_distribution<int> distribution(0, 1);
 	for (size_t i = 0; i < nBits; ++i)
 	{
-		_dataBits[i] = static_cast<unsigned char>(distribution(generator));
+		_dataBits[i] = static_cast<uint8_t>(distribution(generator));
 	}
 
 	modulateSignal();
 }
 
 template<typename fptype>
-std::vector<unsigned char> * Signal<fptype>::getData()
+std::vector<uint8_t> * Signal<fptype>::getData()
 {
 	return &_dataBits;
 }
@@ -48,7 +48,7 @@ void Signal<fptype>::modulateSignal()
 	const fptype timeOfSignal = TmodPerBit * _dataBits.size();
 
 
-	auto A = [&](const unsigned char bit)
+	auto A = [&](const uint8_t bit)
 	{
 		if (bit == 1)
 			return _A;
@@ -74,7 +74,7 @@ void Signal<fptype>::modulateSignal()
 
 		_dataModulated.emplace_back(A(_dataBits[bitIdx])*sin(2.*M_PI*_f0*time));
 
-		PointF point(time, *_dataModulated.end());
+		PointF point(time, _dataModulated.back());
 		_signalModulated.emplace_back(point);
 	}
 }
