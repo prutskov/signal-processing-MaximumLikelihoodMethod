@@ -16,6 +16,7 @@ struct SignalParameter
 	fptype _f0;
 	fptype _bt;
 	fptype _fd;
+	fptype _SNR = (fptype)10.0;
 };
 
 template <typename fptype>
@@ -25,13 +26,13 @@ public:
 	Signal(SignalParameter<fptype> params);
 	Signal(Signal<fptype> *signal, size_t tau);
 	std::vector<uint8_t> getData();
-	SignalParameter<fptype> getParameters();
+	SignalParameter<fptype>* getParameters();
 	std::vector<PointF>* getSignalPoints();
 	virtual ~Signal();
 
 private:
 	void modulateSignal();
-
+	void generateNoise();
 
 private:
 	std::vector<fptype> _dataModulated;

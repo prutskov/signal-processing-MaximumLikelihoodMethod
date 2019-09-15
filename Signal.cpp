@@ -25,7 +25,7 @@ Signal<fptype>::Signal(SignalParameter<fptype> params)
 template<typename fptype>
 Signal<fptype>::Signal(Signal<fptype> *signal, size_t tau)
 {
-	_par = signal->getParameters();
+	_par = *(signal->getParameters());
 	_par._nBits *= 2;
 	_dataBits.resize(_par._nBits);
 	auto bits = signal->getData();
@@ -54,9 +54,9 @@ std::vector<uint8_t> Signal<fptype>::getData()
 }
 
 template<typename fptype>
-SignalParameter<fptype> Signal<fptype>::getParameters()
+SignalParameter<fptype>* Signal<fptype>::getParameters()
 {
-	return _par;
+	return &_par;
 }
 
 template<typename fptype>
@@ -109,5 +109,34 @@ void Signal<fptype>::modulateSignal()
 
 		PointF point(time, _dataModulated.back());
 		_signalModulated.emplace_back(point);
+	}
+
+	generateNoise();
+}
+
+template<typename fptype>
+void Signal<fptype>::generateNoise()
+{
+	const size_t size = _dataModulated.size();
+	std::vector<fptype> noise(size, 0);
+
+	for (size_t i = 0; i < size; ++i)
+	{
+		fptype M, ksi;
+		M = rand() % 9 + 12;
+		ksi = 0;
+		for (int k = 1; k <= M; k++)
+		{
+			ksi += (fptype)((rand() % 21 - 10) / 10.);
+		}
+		noise[i] = ksi / M;
+	}
+	
+	fptype alfa = sqrt(exp(log((fptype)10.0)*_par._SNR/10.));
+
+	for (size_t i = 0; i < size; ++i)
+	{
+		_dataModulated[i] += alfa * noise[i];
+		_signalModulated[i].Y = _dataModulated[i];
 	}
 }

@@ -12,9 +12,10 @@
 #define IDC_BUTTON1                     1005
 #define IDC_N                           1006
 #define IDC_GRAPH2                      1007
-#define IDC_N2                          1008
 #define IDC_TAU                         1008
 #define IDC_TAU_T                       1009
+#define IDC_TAU2                        1010
+#define IDC_TAU_T2                      1011
 
 // Next default values for new objects
 // 

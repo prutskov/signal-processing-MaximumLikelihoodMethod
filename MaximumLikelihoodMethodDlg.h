@@ -44,6 +44,7 @@ public:
 	FPtype bt;
 	FPtype f0;
 	FPtype fd;
+	FPtype SNR;
 	size_t N;
 	size_t tau;
 };
