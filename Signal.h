@@ -23,7 +23,8 @@ class Signal
 {
 public:
 	Signal(SignalParameter<fptype> params);
-	std::vector<uint8_t>* getData();
+	Signal(Signal<fptype> *signal, size_t tau);
+	std::vector<uint8_t> getData();
 	SignalParameter<fptype> getParameters();
 	std::vector<PointF>* getSignalPoints();
 	virtual ~Signal();

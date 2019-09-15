@@ -91,7 +91,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	for (float x = step_x; x <= xmax; x += step_x)
 	{
 		CString str;
-		str.Format(_T("%.3f"), x);
+		str.Format(_T("%.2f"), x);
 		grBmp.DrawString(str, -1, &podpis, PointF(X(RECT, x), Y(RECT, 0) + 2.f), NULL, &brush);
 	}
 	for (float x = -step_x; x >= xmin; x -= step_x)
@@ -104,13 +104,13 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	for (float y = step_y; y <= ymax; y += step_y)
 	{
 		CString str;
-		str.Format(_T("%.5f"), y);
+		str.Format(_T("%.2f"), y);
 		grBmp.DrawString(str, -1, &podpis, PointF(X(RECT, 0), Y(RECT, y) + 2.f), NULL, &brush);
 	}
 	for (float y = 0; y >= ymin; y -= step_y)
 	{
 		CString str;
-		str.Format(_T("%.5f"), y);
+		str.Format(_T("%.2f"), y);
 		grBmp.DrawString(str, -1, &podpis, PointF(X(RECT, 0), Y(RECT, y) + 2.f), NULL, &brush);
 	}
 

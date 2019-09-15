@@ -23,9 +23,34 @@ Signal<fptype>::Signal(SignalParameter<fptype> params)
 }
 
 template<typename fptype>
-std::vector<uint8_t> * Signal<fptype>::getData()
+Signal<fptype>::Signal(Signal<fptype> *signal, size_t tau)
 {
-	return &_dataBits;
+	_par = signal->getParameters();
+	_par._nBits *= 2;
+	_dataBits.resize(_par._nBits);
+	auto bits = signal->getData();
+	
+	std::mt19937 generator(static_cast<unsigned int>(time(0)));
+	std::uniform_int_distribution<int> distribution(0, 1);
+	for (size_t i = 0; i < _par._nBits; ++i)
+	{
+		_dataBits[i] = static_cast<uint8_t>(distribution(generator));
+	}
+
+	const size_t sizeRef = signal->_par._nBits;
+
+	for (size_t i = 0; i < sizeRef; ++i)
+	{
+		_dataBits[tau + i] = bits[i];
+	}
+
+	modulateSignal();
+}
+
+template<typename fptype>
+std::vector<uint8_t> Signal<fptype>::getData()
+{
+	return _dataBits;
 }
 
 template<typename fptype>

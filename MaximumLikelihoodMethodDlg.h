@@ -6,6 +6,7 @@
 #include "Drawer.h"
 #include "Signal.h"
 
+#define FPtype float
 // Диалоговое окно CMaximumLikelihoodMethodDlg
 class CMaximumLikelihoodMethodDlg : public CDialogEx
 {
@@ -34,15 +35,15 @@ protected:
 public:
 	std::vector<PointF> *vector;
 
-	void init_parameters();
-	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();
 
-	std::shared_ptr<Signal<float>> signal1;
+	std::shared_ptr<Signal<FPtype>> signal1, signal2;
 	Drawer drawer1;
-	double A;
-	double bt;
-	double f0;
-	double fd;
-	int N;
+	Drawer drawer2;
+	FPtype A;
+	FPtype bt;
+	FPtype f0;
+	FPtype fd;
+	size_t N;
+	size_t tau;
 };
