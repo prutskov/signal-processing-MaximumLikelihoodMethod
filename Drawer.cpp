@@ -3,7 +3,7 @@
 #include <math.h>
 
 ULONG_PTR token1;
-Drawer::Drawer() : isHasNegative(true)
+Drawer::Drawer() : isHasNegative(true), isHasNegativeX(false)
 {
 	Status s;
 	GdiplusStartupInput input;
@@ -49,13 +49,22 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	}
 	else
 	{
-		ymin = -ymax / 14.f;
+		ymin = -ymax / 10.f;
 	}
 
 	step_y = ymax / 3.f;
 
 	xmax = maxX;
-	xmin = -xmax / 100.f;
+
+	if (isHasNegativeX)
+	{
+		xmin = -xmax;
+	}
+	else
+	{
+		xmin = -xmax / 100.f;
+	}
+	
 	step_x = xmax / 6.f;
 
 
@@ -73,7 +82,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	Pen grid_pen(Color::LightGray, 1);
 	grid_pen.SetDashStyle(DashStyle::DashStyleDash);
 
-	//grBmp.SetSmoothingMode(SmoothingModeAntiAlias);
+	grBmp.SetSmoothingMode(SmoothingModeAntiAlias);
 	grBmp.Clear(Color::Black);
 
 	grBmp.DrawLine(&axis_pen, X(RECT, xmin), Y(RECT, 0), X(RECT, xmax), Y(RECT, 0));

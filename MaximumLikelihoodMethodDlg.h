@@ -6,7 +6,7 @@
 #include "Drawer.h"
 #include "Signal.h"
 
-#define FPtype float
+#define FPtype double
 // Диалоговое окно CMaximumLikelihoodMethodDlg
 class CMaximumLikelihoodMethodDlg : public CDialogEx
 {
@@ -50,4 +50,20 @@ public:
 	size_t tau;
 	FPtype referTau;
 	FPtype realTau;
+
+	ModulationType modulationType;
+	CButton radioAmpl;
+	CButton radioBPSK;
+	CButton radioMSK;
+	afx_msg void OnBnClickedRadio1();
+	afx_msg void OnBnClickedRadio2();
+	afx_msg void OnBnClickedRadio3();
+
+	void makeResearch();
+	std::vector<PointF> researchPoints;
+	size_t nExperiments;
+	FPtype snrLimit;
+	FPtype snrStep;
+	afx_msg void OnBnClickedButton2();
+	Drawer drawer4;
 };

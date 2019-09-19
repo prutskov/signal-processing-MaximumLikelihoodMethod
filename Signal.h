@@ -8,6 +8,13 @@
 using namespace Gdiplus;
 using namespace std;
 
+enum ModulationType
+{
+	Amplitude = 0,
+	BPSK,
+	MSK
+};
+
 template<typename fptype>
 struct SignalParameter
 {
@@ -17,6 +24,7 @@ struct SignalParameter
 	fptype _bt;
 	fptype _fd;
 	fptype _SNR = (fptype)10.0;
+	ModulationType _modulType;
 };
 
 template<typename fptype>
@@ -44,6 +52,10 @@ public:
 
 private:
 	void modulateSignal();
+	void modulateAM(fptype timeSignal, fptype TmodPerBit, fptype Td);
+	void modulateBPSK(fptype timeSignal, fptype TmodPerBit, fptype Td);
+	void modulateMSK(fptype timeSignal, fptype TmodPerBit, fptype Td);
+
 	void generateNoise();
 
 private:

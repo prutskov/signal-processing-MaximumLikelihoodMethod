@@ -20,7 +20,15 @@
 #define IDC_TAU_T3                      1013
 #define IDC_TAU_T4                      1014
 #define IDC_TAU_S2                      1015
+#define IDC_RADIO1                      1016
 #define IDC_GRAPH3                      1017
+#define IDC_RADIO2                      1018
+#define IDC_RADIO3                      1019
+#define IDC_A2                          1020
+#define IDC_A3                          1021
+#define IDC_A4                          1022
+#define IDC_BUTTON2                     1023
+#define IDC_GRAPH4                      1024
 
 // Next default values for new objects
 // 
@@ -28,7 +36,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
