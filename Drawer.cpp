@@ -73,7 +73,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	Pen grid_pen(Color::LightGray, 1);
 	grid_pen.SetDashStyle(DashStyle::DashStyleDash);
 
-	grBmp.SetSmoothingMode(SmoothingModeAntiAlias);
+	//grBmp.SetSmoothingMode(SmoothingModeAntiAlias);
 	grBmp.Clear(Color::Black);
 
 	grBmp.DrawLine(&axis_pen, X(RECT, xmin), Y(RECT, 0), X(RECT, xmax), Y(RECT, 0));
