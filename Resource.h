@@ -16,6 +16,11 @@
 #define IDC_TAU_T                       1009
 #define IDC_TAU2                        1010
 #define IDC_TAU_T2                      1011
+#define IDC_TAU_S                       1012
+#define IDC_TAU_T3                      1013
+#define IDC_TAU_T4                      1014
+#define IDC_TAU_S2                      1015
+#define IDC_GRAPH3                      1017
 
 // Next default values for new objects
 // 

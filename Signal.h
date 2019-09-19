@@ -19,15 +19,27 @@ struct SignalParameter
 	fptype _SNR = (fptype)10.0;
 };
 
+template<typename fptype>
+struct Tau
+{
+	size_t nReference = 0;
+	fptype valReference = 0.0;
+	fptype val = 0;
+};
+
 template <typename fptype>
 class Signal
 {
 public:
 	Signal(SignalParameter<fptype> params);
-	Signal(Signal<fptype> *signal, size_t tau);
+	Signal(Signal<fptype> *signal, SignalParameter<fptype> params, size_t tau);
 	std::vector<uint8_t> getData();
 	SignalParameter<fptype>* getParameters();
 	std::vector<PointF>* getSignalPoints();
+	std::vector<PointF>* getCorrelationPoints();
+	fptype getCorrelation(Signal<fptype> *signal2);
+	fptype getReferenceTau();
+	fptype getTau();
 	virtual ~Signal();
 
 private:
@@ -37,8 +49,10 @@ private:
 private:
 	std::vector<fptype> _dataModulated;
 	std::vector<PointF> _signalModulated;
+	std::vector<PointF> _correlationPoints;
 	std::vector<uint8_t> _dataBits;
 
 	SignalParameter<fptype> _par;
+	Tau<fptype> _tau;
 };
 

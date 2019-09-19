@@ -3,7 +3,7 @@
 #include <math.h>
 
 ULONG_PTR token1;
-Drawer::Drawer()
+Drawer::Drawer() : isHasNegative(true)
 {
 	Status s;
 	GdiplusStartupInput input;
@@ -42,12 +42,21 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 		}
 	}
 	ymax = maxY + maxY / 3.f;
-	ymin = -maxY - maxY / 3.f;
-	step_y = ymax / 4.f;
+
+	if (isHasNegative)
+	{
+		ymin = -maxY - maxY / 3.f;
+	}
+	else
+	{
+		ymin = -ymax / 14.f;
+	}
+
+	step_y = ymax / 3.f;
 
 	xmax = maxX;
 	xmin = -xmax / 100.f;
-	step_x = xmax / 12.f;
+	step_x = xmax / 6.f;
 
 
 	Graphics gr(RECT->hDC);
@@ -55,7 +64,7 @@ void Drawer::DrawItem(LPDRAWITEMSTRUCT RECT)
 	Graphics grBmp(&bmp);
 
 	FontFamily podpis_osi(L"Arial");
-	Gdiplus::Font podpis(&podpis_osi, 12, FontStyleRegular, UnitPixel);
+	Gdiplus::Font podpis(&podpis_osi, 11, FontStyleRegular, UnitPixel);
 
 	SolidBrush brush(Color::White);
 	Pen graph_pen(Color::Yellow, 1);

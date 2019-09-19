@@ -40,6 +40,7 @@ public:
 	std::shared_ptr<Signal<FPtype>> signal1, signal2;
 	Drawer drawer1;
 	Drawer drawer2;
+	Drawer drawer3;
 	FPtype A;
 	FPtype bt;
 	FPtype f0;
@@ -47,4 +48,6 @@ public:
 	FPtype SNR;
 	size_t N;
 	size_t tau;
+	FPtype referTau;
+	FPtype realTau;
 };

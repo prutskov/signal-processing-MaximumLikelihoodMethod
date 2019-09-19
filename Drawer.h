@@ -11,6 +11,7 @@ class Drawer : public CStatic
 
 public:
 	float xmin, xmax, ymin, ymax, step_x, step_y;
+	bool isHasNegative;
 	vector<PointF> *_points;
 	Drawer();
 	~Drawer();
