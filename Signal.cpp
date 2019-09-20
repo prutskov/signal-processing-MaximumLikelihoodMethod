@@ -178,8 +178,18 @@ void Signal<fptype>::modulateAM(fptype timeSignal, fptype TmodPerBit, fptype Td)
 			++bitIdx;
 			curBitTime = 0.0;
 		}
-
-		_dataModulated.emplace_back(_par._A*_dataBits[bitIdx]*sin(2.*M_PI*_par._f0*time));
+		auto A = [&](uint8_t bit)
+		{
+			if (bit == 1)
+			{
+				return (fptype)_par._A;
+			}
+			else
+			{
+				return _par._A / (fptype)2.0;
+			}
+		};
+		_dataModulated.emplace_back(A(_dataBits[bitIdx])*sin(2.*M_PI*_par._f0*time));
 
 		PointF point(time, _dataModulated.back());
 		_signalModulated.emplace_back(point);
@@ -227,20 +237,21 @@ void Signal<fptype>::modulateMSK(fptype timeSignal, fptype TmodPerBit, fptype Td
 	size_t bitIdx = 0;
 	fptype curBitTime = 0;
 	bool isTauDetected = false;
+
 	fptype theta = 0.0;
 	fptype phi = 0.0;
 	fptype deltaF = _par._bt / 4.0;
 
-	std::vector<int> sBits;
+	std::vector<int> s1Bitsb0;
 	for (size_t s = 0; s < _dataBits.size(); ++s)
 	{
 		if (_dataBits[s] == true)
 		{
-			sBits.push_back(1);
+			s1Bitsb0.push_back(1);
 		}
 		else
 		{
-			sBits.push_back(-1);
+			s1Bitsb0.push_back(-1);
 		}
 	}
 
@@ -261,12 +272,32 @@ void Signal<fptype>::modulateMSK(fptype timeSignal, fptype TmodPerBit, fptype Td
 			++bitIdx;
 			curBitTime = 0.0;
 		}
+
+		fptype sum_ref_b0 = 0;
+
+		for (int k = 0; k < bitIdx; k++)
+		{
+			sum_ref_b0 += s1Bitsb0[k];
+		}
+
+		theta = 2 * M_PI * deltaF * (TmodPerBit * sum_ref_b0 + s1Bitsb0[bitIdx] * curBitTime);
+
+		if (theta > 2 * M_PI)
+		{
+			theta -= 2 * M_PI;
+		}
+
+		if (theta < -2 * M_PI)
+		{
+			theta += 2 * M_PI;
+		}
+
 		fptype phase = 2.*M_PI*_par._f0*time;
 
 		if (phase > 2 * M_PI)	phase -= 2.0 * M_PI;
 		if (phase < -2 * M_PI)	phase += 2.0 * M_PI;
 
-		_dataModulated.emplace_back(_par._A * sin(phase + _dataBits[bitIdx] * M_PI));
+		_dataModulated.emplace_back(_par._A * sin(phase + theta));
 
 		PointF point(time, _dataModulated.back());
 		_signalModulated.emplace_back(point);
@@ -296,8 +327,8 @@ void Signal<fptype>::generateNoise()
 		Esig += _dataModulated[i] * _dataModulated[i];
 	}
 
-	fptype alfa = sqrt(exp(log((fptype)10.0)*(-_par._SNR / 10.)));
-	//fptype alfa = sqrt(pow(10, -_par._SNR/10) * Esig / En);
+	//fptype alfa = sqrt(exp(log((fptype)10.0)*(-_par._SNR / 10.)));
+	fptype alfa = sqrt(pow(10, -_par._SNR/10) * Esig / En);
 
 	for (size_t i = 0; i < size; ++i)
 	{
